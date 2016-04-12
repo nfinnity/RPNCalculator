@@ -1,0 +1,519 @@
+Script started on Sun 01 Mar 2015 03:29:24 PM EST
+]0;finnegan_nd@cobra:~/csc245/Progs/Prog2[?1034h[finnegan_nd@cobra Prog2]$ cat -n dc.cpp
+     1	#include <cstdlib>
+     2	#include <cctype>
+     3	#include <iostream>
+     4	#include <cstring>
+     5	#include "stack.h"
+     6	using namespace std;
+     7	
+     8	
+     9	Stack<int> dc(20);
+    10	
+    11	
+    12	/*--------------------------------------------
+    13	methodP()
+    14	Pre:
+    15	Nothing is printed to the screen.
+    16	
+    17	Post:
+    18	Checks to see if the stack is empty. If it is
+    19	not, then the value at the top of the stack
+    20	is taken and printed out to the screen.
+    21	No changes are made in the stack, and a new
+    22	line is printed after this function call.
+    23	*/
+    24	void methodP()
+    25	{
+    26		if(!(dc.isEmpty()))
+    27			cout << dc.top() << endl;
+    28	}
+    29	
+    30	/*--------------------------------------------
+    31	methodN()
+    32	Pre:
+    33	Nothing is printed to the screen, and the stack
+    34	is unaltered.
+    35	
+    36	Post:
+    37	Checks to see if the stack is empty. If it is
+    38	not, then the value at the top of stack is removed
+    39	and printed to the screen. A new line is not added
+    40	after this function call.
+    41	*/
+    42	void methodN()
+    43	{
+    44		if(!(dc.isEmpty()))
+    45			cout << dc.topAndPop() << " ";
+    46	}
+    47	
+    48	/*--------------------------------------------
+    49	methodF()
+    50	Pre:
+    51	Nothing is printed to the screen.
+    52	
+    53	Post:
+    54	Makes a copy of the stack and checks to see
+    55	if that copy is empty. If it is not, then a
+    56	loop goes through each entry of the copy and
+    57	removes and prints each value. The original
+    58	is left unaltered.
+    59	*/
+    60	void methodF()
+    61	{
+    62		Stack<int> copy = dc;
+    63		while (!(copy.isEmpty()))
+    64			cout << copy.topAndPop() << endl;
+    65	}
+    66	
+    67	/*--------------------------------------------
+    68	methodC()
+    69	Pre:
+    70	Nothing is printed to the screen.
+    71	
+    72	Post:
+    73	Regardless of whether the stack is empty already
+    74	or not, a call to the function makeEmpty() in 
+    75	stack.cpp is made to delete all entries.
+    76	*/
+    77	void methodC()
+    78	{
+    79		dc.makeEmpty();
+    80	}
+    81	
+    82	/*--------------------------------------------
+    83	methodD()
+    84	Pre:
+    85	The stack is unaltered and nothing is printed.
+    86	
+    87	Post:
+    88	A duplicate of the current top value of the stack
+    89	is made and pushed back onto the stack.
+    90	*/
+    91	void methodD()
+    92	{
+    93		if (!(dc.isEmpty()))
+    94			dc.push(dc.top());
+    95	}
+    96	
+    97	/*--------------------------------------------
+    98	methodR()
+    99	Pre:
+   100	The stack is unaltered and nothing is printed.
+   101	
+   102	Post:
+   103	The top two values of the stack are taken, 
+   104	reversed, and placed back into the stack.
+   105	*/
+   106	void methodR()
+   107	{
+   108		int top = dc.topAndPop();
+   109		int next = dc.topAndPop();
+   110		dc.push(top);
+   111		dc.push(next);
+   112	}
+   113	
+   114	/*--------------------------------------------
+   115	Pre:
+   116	The stack is unaltered and nothing is printed.
+   117	
+   118	Post:
+   119	The top two values in the stack are taken,
+   120	summed, and the sum is placed back into the stack.
+   121	*/
+   122	void addition ()
+   123	{
+   124		int first = dc.topAndPop();
+   125		int second = dc.topAndPop();
+   126		int sum = first + second;
+   127		dc.push(sum);
+   128	}
+   129	
+   130	/*--------------------------------------------
+   131	Pre:
+   132	The stack is unaltered and nothing is printed.
+   133	
+   134	Post:
+   135	The top two values of the stack are taken, and 
+   136	the first one popped is subtracted from the 
+   137	second one popped. The difference is added
+   138	back onto the stack.
+   139	*/
+   140	void subtraction ()
+   141	{
+   142		int first = dc.topAndPop();
+   143		int second = dc.topAndPop();
+   144		int difference = second - first;
+   145		dc.push(difference);
+   146	}
+   147	
+   148	/*--------------------------------------------
+   149	Pre:
+   150	The stack is unaltered and nothing is printed.
+   151	
+   152	Post:
+   153	The top two values of the stack are taken, and 
+   154	the second one popped is divided by the first 
+   155	one popped. The quotient is added back onto 
+   156	the stack. A divide by zero exception is added.
+   157	*/
+   158	void division ()
+   159	{
+   160			int first = dc.topAndPop();
+   161			int second = dc.topAndPop();
+   162			if (first == 0)
+   163				cout << "Exception-- CANNOT DIVIDE BY ZERO" << endl;
+   164			else
+   165			{
+   166			int quotient = second/first;
+   167			dc.push(quotient);
+   168			}
+   169	}
+   170	
+   171	/*--------------------------------------------
+   172	Pre:
+   173	The stack is unaltered and nothing is printed.
+   174	
+   175	Post:
+   176	The top two values of the stack are taken, the
+   177	values are multiplied, and the product is then
+   178	pushed onto the stack.
+   179	*/
+   180	void multiplication ()
+   181	{
+   182		int first = dc.topAndPop();
+   183		int second = dc.topAndPop();
+   184		int product = first*second;
+   185		dc.push(product);
+   186	}
+   187	
+   188	/*--------------------------------------------
+   189	Pre:
+   190	The stack is unaltered and nothing is printed.
+   191	
+   192	Post:
+   193	The top two values of the stack are taken and
+   194	the modulo operation is performed:
+   195	second%first
+   196	The remainder is then pushed back onto the
+   197	stack. A divide by zero exception is also
+   198	included.
+   199	*/
+   200	void modulo ()
+   201	{
+   202		int first = dc.topAndPop();
+   203		int second = dc.topAndPop();
+   204		if (first == 0)
+   205			cout << "Exception-- CANNOT DIVIDE BY ZERO" << endl;
+   206		else
+   207		{
+   208			int result = second%first;
+   209			dc.push(result);
+   210		}
+   211	}
+   212	
+   213	/*--------------------------------------------
+   214	Pre:
+   215	The stack is unaltered and nothing is printed.
+   216	
+   217	Post:
+   218	All of the values in the stack are removed and
+   219	summed. The result is then pushed onto the stack.
+   220	*/
+   221	void methodT ()
+   222	{
+   223		int sum = dc.topAndPop();
+   224		while (!(dc.isEmpty()))
+   225		{
+   226			int next = dc.topAndPop();
+   227			sum += next;
+   228		}
+   229		dc.push(sum);
+   230	}
+   231	
+   232	/*--------------------------------------------
+   233	Pre:
+   234	The stack is unaltered and nothing is printed.
+   235	
+   236	Post:
+   237	All of the values in the stack are removed and
+   238	multiplied together. The product is then
+   239	pushed onto the stack.
+   240	*/
+   241	void methodM ()
+   242	{
+   243		int product = dc.topAndPop();
+   244		while (!(dc.isEmpty()))
+   245		{
+   246			int next = dc.topAndPop();
+   247			product = product*next;
+   248		}
+   249		dc.push(product);
+   250	}
+   251	
+   252	
+   253	/*--------------------------------------------
+   254	Pre:
+   255	A string from the user input is sent in.
+   256	
+   257	Post:
+   258	The string is parsed through, separating 
+   259	digits, operators, negative symbol, and 
+   260	character commands. Whenever an operator,
+   261	command, or negative symbol is encountered,
+   262	the current value in string "number" is 
+   263	converted to an integer and pushed to the
+   264	stack (if it is not empty). The appropriate
+   265	function calls are made for each entry. If
+   266	there is an invalid entry, then a "not valid
+   267	entry" exception is called.
+   268	*/
+   269	void parseString(string input)
+   270	{
+   271		string number = "";
+   272		for (int i = 0; i < input.length(); i++)
+   273		{
+   274			char check = input.at(i);
+   275			//Enters this branch if it is a lowercase letter.
+   276			if (islower(check))
+   277			{
+   278				if (number != "")
+   279				{
+   280					int pushValue = atoi(number.c_str());
+   281					dc.push(pushValue);
+   282					number = "";
+   283				}		
+   284				switch (check)
+   285				{
+   286				case 'p' :
+   287				{
+   288					methodP();
+   289					break;
+   290				}
+   291	
+   292				case 'n' :
+   293				{ 
+   294					methodN();
+   295					break;
+   296				}
+   297	
+   298				case 'f' :
+   299				{ 
+   300					methodF();
+   301					break;
+   302				}
+   303	
+   304				case 'c' :
+   305				{
+   306					methodC();
+   307					break;
+   308				}
+   309	
+   310				case 'd' :
+   311				{
+   312					methodD();
+   313					break;
+   314				}
+   315	
+   316				case 'r' :
+   317				{
+   318					methodR();
+   319					break;
+   320				}
+   321	
+   322				case 'm' :
+   323				{
+   324					methodM();
+   325					break;
+   326				}
+   327	
+   328				case 't' :
+   329				{
+   330					methodT();
+   331					break;
+   332				}
+   333				//This called when the letter entered does not match a command.
+   334				default :
+   335				cout << "Exception-- INVALID EXPRESSION, PLEASE RE-ENTER" << endl;
+   336				}
+   337			}
+   338	
+   339			//Checks to see if the ASCII value is equal to 43 (+).
+   340			else if(int(check) == 43)
+   341			{
+   342				if (number != "")
+   343				{
+   344					int pushValue = atoi(number.c_str());
+   345					dc.push(pushValue);
+   346				}		
+   347				addition();	
+   348				number = "";
+   349			}
+   350	
+   351			//Checks to see if the ASCII value is equal to 45 (-).
+   352			else if(int(check) == 45)
+   353			{
+   354				if (number != "")
+   355				{
+   356					int pushValue = atoi(number.c_str());
+   357					dc.push(pushValue);
+   358				}
+   359				subtraction();
+   360				number = "";
+   361			}
+   362	
+   363			//Checks to see if the ASCII value is equal to 42 (*).
+   364			else if(int(check) == 42)
+   365			{
+   366				if (number != "")
+   367				{
+   368					int pushValue = atoi(number.c_str());
+   369					dc.push(pushValue);
+   370				}
+   371				multiplication();
+   372				number = "";
+   373			}
+   374	
+   375			//Checks to see if the ASCII value is equal to 47 (/).
+   376			else if(int(check) == 47)
+   377			{
+   378				if (number != "")
+   379				{
+   380					int pushValue = atoi(number.c_str());
+   381					dc.push(pushValue);
+   382				}
+   383				division();
+   384				number = "";
+   385			}
+   386	
+   387			//Checks to see if the ASCII value is equal to 37 (%).
+   388			else if(int(check) == 37)
+   389			{
+   390				if (number != "")
+   391				{
+   392					int pushValue = atoi(number.c_str());
+   393					dc.push(pushValue);
+   394				}
+   395				modulo();
+   396				number = "";
+   397			}
+   398	
+   399			//Checks to see if the ASCII value is equal to 95 (_).
+   400			else if (int(check) == 95)
+   401			{
+   402				if (number != "")
+   403				{
+   404					int pushValue = atoi(number.c_str());
+   405					dc.push(pushValue);
+   406				}
+   407				number = "-";
+   408			}
+   409	
+   410			//Checks to see if the entry is a digit.
+   411			//If it is, it is appended to the number string.
+   412			else if(isdigit(check))
+   413				{
+   414					number += check;
+   415				}
+   416	
+   417			else if (isblank(check))
+   418			{}
+   419	
+   420		}
+   421	
+   422		//This is to cover the possibility that the last thing
+   423		//entered into the string is an number.
+   424		if (number != "")
+   425				{
+   426					int pushValue = atoi(number.c_str());
+   427					dc.push(pushValue);
+   428				}
+   429	
+   430	}
+   431	
+   432	
+   433	//Main is simply a while that takes user input,
+   434	//makes a call to parse the string, and continues this 
+   435	//until the end of file is reached on standard input.
+   436	int main()
+   437	{
+   438	
+   439		while(1)
+   440		{
+   441			string input;
+   442			cin >> input;
+   443			parseString(input);
+   444		}
+   445	
+   446	
+   447	}
+   448	
+   449	
+]0;finnegan_nd@cobra:~/csc245/Progs/Prog2[finnegan_nd@cobra Prog2]$ c++ dc.cpp
+]0;finnegan_nd@cobra:~/csc245/Progs/Prog2[finnegan_nd@cobra Prog2]$ ./a,[K.out
+2 3  +
+p
+5
+6 - p
+-1
+4 6 *+p
+23
+2/p
+11
+4%p
+3
+2 100 +  +
+3 4 5 6 g f
+5
+4
+3
+102
+3
+5d*p
+25
+rf2pc
+5
+25
+4
+3
+102
+3
+2
+f
+1 2 3 4m
+f
+24
+20-3 2t f
+9
+4-10- f  f
+-5
+5+f
+0
+c_5_3f   _  5_5_3f
+-3
+-5
+-5
+n
+-3 f
+-5
+-5
+mf
+25
+0rf
+25
+0
+/
+f
+0
+25f rf/
+0
+25
+Exception-- CANNOT DIVIDE BY ZERO
+i
+Exception-- INVALID EXPRESSION, PLEASE RE-ENTER
+c
+
+]0;finnegan_nd@cobra:~/csc245/Progs/Prog2[finnegan_nd@cobra Prog2]$ exit
+exit
+
+Script done on Sun 01 Mar 2015 03:35:09 PM EST
